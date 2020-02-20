@@ -10,9 +10,16 @@ export default function App() {
 
   const [text, setText] = React.useState(""); //Parametro Iniziale
   const [list, setList] = React.useState([
-    /*     { id: "001", text: "Fare la spesa", isDone: true },
+    /*    
+    { id: "001", text: "Fare la spesa", isDone: true },
     { id: "002", text: "Fare pulizie", isDone: false }//datifinti vanno via quando implemento la parte dinamicxa */
   ]);
+
+  const handleClickRem = id => {
+    setList(list.filter(todo => todo.id !== id.id));
+    console.log("list: ", list);
+    console.log("todo.id: ", id.id);
+  };
   const addTodo = () => {
     // Aggiungere un elemento alla lista o alla copia della lista
     //la lista è dentro uno USESTATE quindi devo fare la copia della
@@ -30,9 +37,10 @@ export default function App() {
     setList(listCopy);
     setText("");*/
     setList([...list, newTodo]);
+
     setText("");
   };
-  const checkTodo = () => {};
+  // const checkTodo = () => {};
   return (
     <div>
       <div>
@@ -66,6 +74,10 @@ export default function App() {
                   )
                 );
               }}
+              handleClick={() => {
+                console.log("REMOVE : ", todo.id);
+                handleClickRem(todo);
+              }}
             />
           );
         })}
@@ -75,7 +87,7 @@ export default function App() {
 }
 /* function Todo(props){
   const {todo} = props; */
-function Todo({ todo, onToggle }) {
+function Todo({ todo, onToggle, handleClick }) {
   wait(100);
   return (
     <div key={todo.id}>
@@ -85,10 +97,18 @@ function Todo({ todo, onToggle }) {
         onChange={() => {
           //devo cambiare lo stato di check che è dentro il todo ma non lo posso modificare
           //per poterlo modificare devo farmi arrivare una callBack tramite le props
-          onToggle();
+          onToggle(todo);
         }}
       />{" "}
       {todo.text}
+      <button
+        onClick={() => {
+          handleClick(todo);
+        }}
+      >
+        {" "}
+        X{" "}
+      </button>
     </div>
   );
 }
